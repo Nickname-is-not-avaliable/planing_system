@@ -1,0 +1,32 @@
+[
+  {
+    "email": "hui@mail.ru",
+    "password": "penis",
+    "id": 1
+  },
+  {
+    "email": "aye@mail.ru",
+    "password": "gzgzgz",
+    "id": 2
+  },
+  {
+    "email": "*****",
+    "password": "*****",
+    "id": 3
+  },
+  {
+    "email": "*****",
+    "password": "*****",
+    "id": 4
+  },
+  {
+    "email": "*",
+    "password": "***",
+    "id": 5
+  },
+  {
+    "email": "xuй",
+    "password": "****",
+    "id": 6
+  }
+]
