@@ -1,0 +1,114 @@
+/* Общий контейнер */
+.home-page-container {
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #e0f7ff, #f3e8ff);
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  /* Приветствие */
+  .welcome-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .welcome-header p {
+    font-size: 1.1rem;
+    color: #666;
+  }
+  
+  /* Описание */
+  .system-overview {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 1.5rem;
+    padding: 1rem 1.5rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    font-size: 1rem;
+  }
+  
+  /* Сетка карточек */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  
+  /* Карточка */
+  .dashboard-card {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: #222;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Иконка */
+  .card-icon {
+    color: #4a90e2;
+    background: #e6f0fa;
+    width: fit-content;
+    padding: 0.7rem;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+  
+  .dashboard-card:hover .card-icon {
+    transform: scale(1.1);
+  }
+  
+  /* Заголовок карточки */
+  .dashboard-card h3 {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+  
+  /* Пояснение */
+  .dashboard-card p {
+    font-size: 0.95rem;
+    color: #555;
+  }
+  
+  /* Нижняя часть */
+  .next-steps {
+    font-size: 0.95rem;
+    text-align: center;
+    margin-top: 2rem;
+    color: #777;
+  }
+  
+  /* Кнопка для модалки */
+  .info-button {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #ffffffaa;
+    border: none;
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    padding: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .info-button:hover {
+    transform: scale(1.1);
+  }
+  

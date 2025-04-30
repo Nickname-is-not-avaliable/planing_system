@@ -1,0 +1,501 @@
+/* src/pages/Reports/ReportDetailsPage.css */
+.report-details-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 25px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.report-details-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+/* Используем grid для основного контента */
+.report-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Адаптивная сетка */
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+/* Секции внутри грида */
+.detail-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.detail-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 1.1em;
+    color: #444;
+}
+
+/* Секция оценки занимает всю ширину */
+.detail-section-full {
+    grid-column: 1 / -1;
+}
+
+
+.detail-item {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.detail-label {
+  font-weight: bold;
+  color: #555;
+  margin-right: 8px; /* Небольшой отступ от значения */
+  display: inline-block; /* Чтобы margin-right работал */
+  min-width: 100px; /* Выравнивание значений */
+}
+
+.detail-value {
+  color: #333;
+}
+
+/* Особый стиль для оценки */
+.assessment-score {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* Ссылка "Вернуться к списку" */
+.report-details-container > a { /* Прямой потомок контейнера */
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.report-details-container > a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+/* Ссылки внутри деталей (на план) */
+.detail-value a {
+    color: #0056b3; /* Немного темнее */
+    text-decoration: none;
+}
+.detail-value a:hover {
+    text-decoration: underline;
+}
+
+
+/* Разделы для документов и комментариев */
+.related-documents-section,
+.comments-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.related-documents-section h3,
+.comments-section h3 {
+    margin-bottom: 15px;
+    color: #444;
+}
+
+
+/* Используем существующий стиль для ошибок */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-align: center;
+    margin: 15px 0;
+}
+
+/* TODO: Стили для формы оценки, списка документов, комментариев... */
+.assessment-form {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #ccc;
+}
+.assessment-form label { margin-right: 10px;}
+.assessment-form input { width: 60px; margin-right: 10px; padding: 5px;}
+.assessment-form button { padding: 5px 10px; }
+
+/* Стили для формы оценки */
+.assessment-form {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px dashed #ccc;
+  background-color: #f0f8ff; /* Легкий фон для выделения */
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.assessment-form .form-group {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Отступ между label и input */
+  margin-bottom: 15px;
+}
+
+.assessment-form label {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 0; /* Убираем стандартный отступ label */
+}
+
+.assessment-form input[type="number"] {
+  width: 80px; /* Фиксированная ширина для поля оценки */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.assessment-form button {
+  padding: 8px 15px;
+  background-color: #ffc107; /* Желтый для оценки */
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease;
+}
+.assessment-form button:hover {
+  background-color: #e0a800;
+}
+.assessment-form button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+  color: #666;
+}
+
+/* Стиль для ошибки внутри формы оценки */
+.assessment-error {
+  margin-top: 10px;
+  margin-bottom: 0; /* Убираем лишний отступ снизу */
+  padding: 8px 10px; /* Меньше padding */
+  font-size: 0.9em;
+}
+
+/* Используем существующий стиль для общей ошибки страницы */
+.error-message {
+  /* ... (остается как есть) ... */
+  margin: 15px 0; /* Добавляем отступ сверху/снизу для общей ошибки */
+}
+
+/* Раздел Комментарии */
+.comments-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.comments-section h3 {
+  margin-bottom: 20px;
+  color: #444;
+}
+
+/* Форма добавления комментария */
+.comment-form {
+  margin-bottom: 30px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.comment-form .form-group {
+  margin-bottom: 15px;
+}
+
+.comment-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.comment-form textarea:disabled {
+  background-color: #eee;
+  cursor: not-allowed;
+}
+
+.comment-form button {
+  padding: 10px 18px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease;
+}
+.comment-form button:hover {
+  background-color: #0056b3;
+}
+.comment-form button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Список комментариев */
+.comments-list {
+  margin-top: 20px;
+}
+
+.comment-item {
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.comment-meta {
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  color: #6c757d; /* Серый цвет для меты */
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Перенос на малых экранах */
+}
+
+.comment-author {
+  font-weight: bold;
+  color: #343a40; /* Темнее для автора */
+  margin-right: 10px;
+}
+
+.comment-date {
+  white-space: nowrap; /* Не переносить дату */
+}
+
+.comment-text {
+  margin: 0;
+  line-height: 1.6;
+  color: #212529;
+  white-space: pre-wrap; /* Сохранять переносы строк из textarea */
+}
+
+/* Ошибка внутри блока комментариев */
+.comment-error {
+  font-size: 0.9em;
+  margin-top: 10px; /* Отступ для ошибки под формой */
+}
+.comment-item {
+  /* ... существующие стили ... */
+  display: flex; /* Используем flex для размещения контента и кнопки */
+  justify-content: space-between;
+  align-items: flex-start; /* Выравниваем по верху */
+  gap: 15px; /* Отступ между контентом и кнопкой */
+}
+
+.comment-content {
+  flex-grow: 1; /* Занимает основное пространство */
+}
+
+.comment-actions {
+  flex-shrink: 0; /* Не сжиматься */
+}
+
+/* Кнопка удаления комментария */
+.delete-comment-btn {
+  background: none;
+  border: none;
+  color: #dc3545; /* Красный цвет */
+  font-size: 1.4em; /* Крупнее значок */
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 5px; /* Небольшие отступы */
+  opacity: 0.6;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.delete-comment-btn:hover {
+  opacity: 1;
+  color: #a71d2a; /* Темнее при наведении */
+}
+
+.delete-comment-btn:disabled {
+  color: #aaa;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* Стиль для элемента во время удаления */
+.comment-item.deleting {
+  opacity: 0.5;
+  background-color: #ffebeb; /* Легкий красный фон */
+  pointer-events: none; /* Блокируем взаимодействие */
+}
+
+/* Ошибка внутри блока комментариев */
+.comment-error {
+  font-size: 0.9em;
+  margin-top: 10px;
+  /* Убедимся, что она показывается и под формой, и над списком */
+}
+
+/* Раздел Документы */
+.related-documents-section { /* ... */ }
+.related-documents-section h3 { /* ... */ }
+.document-upload-form { /* ... */ }
+.documents-list { /* ... */ }
+.documents-list ul { /* ... */ }
+
+.documents-list li {
+    /* ... существующие стили ... */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px; /* Отступ между ссылкой и действиями */
+}
+.documents-list li a {
+     /* ... существующие стили ... */
+     flex-grow: 1; /* Ссылка занимает доступное место */
+     margin-right: 10px; /* Отступ справа от ссылки */
+}
+
+/* Обертка для кнопок/меты документа */
+.doc-actions {
+    flex-shrink: 0; /* Не сжиматься */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Кнопка удаления документа */
+.delete-doc-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1.4em;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 5px;
+    opacity: 0.6;
+    transition: opacity 0.2s, color 0.2s;
+}
+.delete-doc-btn:hover {
+    opacity: 1;
+    color: #a71d2a;
+}
+.delete-doc-btn:disabled {
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+/* Стили для списка документов */
+.documents-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.documents-list li {
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Контейнер для иконки типа и имени файла */
+.doc-info {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Отступ между иконкой типа и именем */
+  flex-grow: 1; /* Занимает доступное место */
+  overflow: hidden; /* Предотвращает выход текста за пределы */
+}
+
+/* Иконка типа файла */
+.file-type-icon {
+  font-size: 1.3em; /* Размер иконки */
+  color: #6c757d; /* Цвет иконки */
+  flex-shrink: 0; /* Не сжимать иконку */
+}
+/* Цвета для разных типов (опционально) */
+.file-type-icon svg[data-icon*="pdf"] { color: #dc3545; }
+.file-type-icon svg[data-icon*="word"] { color: #0d6efd; }
+.file-type-icon svg[data-icon*="excel"] { color: #198754; }
+.file-type-icon svg[data-icon*="image"] { color: #6f42c1; }
+.file-type-icon svg[data-icon*="archive"] { color: #fd7e14; }
+
+
+/* Имя файла */
+.doc-filename {
+  white-space: nowrap; /* Запрет переноса строки */
+  overflow: hidden; /* Скрыть выходящий текст */
+  text-overflow: ellipsis; /* Добавить троеточие */
+  color: #212529;
+}
+
+/* Контейнер для действий (скачать, удалить) */
+.doc-actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Отступ между иконкой скачивания и удаления */
+}
+
+/* Ссылка/иконка скачивания */
+.download-link {
+  color: #0d6efd; /* Синий цвет */
+  font-size: 1.1em; /* Размер иконки скачивания */
+  text-decoration: none;
+  transition: color 0.2s;
+  display: inline-flex; /* Для выравнивания иконки */
+  align-items: center;
+}
+.download-link:hover {
+  color: #0a58ca; /* Темнее при наведении */
+}
+
+/* Кнопка удаления (используем иконку) */
+.delete-doc-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  font-size: 1.1em; /* Размер иконки корзины */
+  line-height: 1;
+  cursor: pointer;
+  padding: 0; /* Убираем лишние отступы */
+  opacity: 0.7;
+  transition: opacity 0.2s, color 0.2s;
+  display: inline-flex;
+  align-items: center;
+}
+.delete-doc-btn:hover {
+  opacity: 1;
+  color: #a71d2a;
+}
+.delete-doc-btn:disabled {
+  color: #aaa;
+  cursor: not-allowed;
+  opacity: 0.4;
+}

@@ -1,0 +1,112 @@
+/* src/pages/Plans/PlanDetailsPage.css */
+.plan-details-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 25px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+  
+  .plan-details-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+  }
+  
+  .plan-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Адаптивная сетка */
+    gap: 20px; /* Отступы между элементами */
+    margin-bottom: 30px;
+  }
+  
+  .detail-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #eee;
+    word-wrap: break-word; /* Перенос длинных слов */
+  }
+  
+  /* Элементы, занимающие всю ширину */
+  .detail-item-full {
+      grid-column: 1 / -1; /* Растягиваем на все колонки */
+  }
+  
+  
+  .detail-label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+  }
+  
+  .detail-value {
+    color: #333;
+    font-size: 1em;
+  }
+  
+  .detail-value i { /* Стиль для "Нет описания" и т.п. */
+      color: #888;
+  }
+  
+  
+  .executors-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  
+  .executors-list li {
+    background-color: #eef;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    font-size: 0.95em;
+  }
+  
+  /* Ссылка "Вернуться к списку" */
+  .plan-details-container a {
+      color: #007bff;
+      text-decoration: none;
+      transition: color 0.2s;
+  }
+  .plan-details-container a:hover {
+      color: #0056b3;
+      text-decoration: underline;
+  }
+  
+  /* Кнопки действий (пока не используются) */
+  .plan-actions {
+      margin-top: 20px;
+      text-align: right;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+  }
+  .plan-actions button {
+      padding: 8px 15px;
+      margin-left: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background-color: #f0f0f0;
+  }
+  .plan-actions button:hover {
+      background-color: #e0e0e0;
+  }
+  
+  
+  /* Используем существующий стиль для ошибок */
+  .error-message {
+      color: #dc3545;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      padding: 10px 15px;
+      border-radius: 4px;
+      text-align: center;
+  }
