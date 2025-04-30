@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru"> <!-- Указываем язык как русский -->
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      Иконка: Помести favicon.ico в папку public или в корень,
+      и Vite его подхватит. Или используй SVG/PNG:
+      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    -->
+    <link rel="icon" href="/favicon.ico" /> <!-- Убедись, что favicon.ico есть в public/ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Цвет темы для мобильных браузеров -->
+    <meta name="theme-color" content="#ffffff" /> <!-- Можешь изменить на цвет хедера (#282c34) -->
+    <meta
+      name="description"
+      content="Автоматизированная Система Мониторинга Планов - Управление планами и отчетами"
+    />
+    <!-- Опционально: Ссылки для PWA (если manifest.json и иконки есть в public/) -->
+    <!--
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    -->
+    <title>АС Мониторинга Планов</title>
+  </head>
+  <body>
+    <!-- Сообщение для пользователей с отключенным JS -->
+    <noscript>Вам необходимо включить JavaScript для запуска этого приложения.</noscript>
+
+    <!-- Корневой элемент, куда React будет монтировать приложение -->
+    <div id="root"></div>
+
+    <!-- Точка входа JavaScript для Vite -->
+    <!-- Указывает на твой главный JS/JSX файл в папке src -->
+    <script type="module" src="/src/index.jsx"></script>
+  </body>
+</html>
