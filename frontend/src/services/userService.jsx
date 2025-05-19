@@ -11,15 +11,30 @@ const getUserById = (id) => {
     return api.get(`/users/${id}`);
 }
 
-// Опционально: другие функции CRUD для пользователей, если нужны будут в админке
-// const updateUser = (id, userData) => { ... }
-// const deleteUser = (id) => { ... }
+const partialUpdateUser = (id, partialUserData) => {
+  return api.patch(`/users/${id}`, partialUserData);
+};
+
+const updateUser = (id, userData) => {
+    return api.put(`/users/${id}`, userData);
+};
+const deleteUser = (id) => {
+    return api.delete(`/users/${id}`) 
+        .then(response => {
+            return response;
+        })
+        .catch(error => {
+            console.error(`[userService.deleteUser] Error deleting user ${id}:`, error.response || error.message || error); // <--- ЛОГ 3 (Ошибка)
+            throw error; 
+        });
+};
 
 const userService = {
   getAllUsers,
   getUserById,
-  // updateUser,
-  // deleteUser,
+  partialUpdateUser,
+  updateUser,
+  deleteUser,
 };
 
 export default userService;

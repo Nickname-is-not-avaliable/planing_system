@@ -1,3 +1,4 @@
+// src/components/RoleModal.jsx
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './RoleModal.css';

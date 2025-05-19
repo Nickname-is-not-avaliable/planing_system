@@ -1,0 +1,100 @@
+/* src/pages/Admin/components/EditUserModal.css */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Поверх остального контента */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px; /* Ограничиваем ширину модалки */
+    animation: fadeInModal 0.3s ease-out;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.modal-content .form-group {
+    margin-bottom: 18px;
+}
+
+.modal-content .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #444;
+}
+
+.modal-content .form-group input[type="text"],
+.modal-content .form-group input[type="email"],
+.modal-content .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+.modal-content .form-group input:disabled,
+.modal-content .form-group select:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end; /* Кнопки справа */
+    gap: 10px; /* Отступ между кнопками */
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* Стили для кнопок в модалке (могут наследоваться или быть специфичными) */
+.modal-actions .action-btn { /* Используем общий класс, если есть */
+    padding: 8px 18px;
+    font-size: 0.95em;
+}
+/* Или можно определить .modal-save-btn, .modal-cancel-btn */
+
+.modal-error {
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+/* Стили из UserManagementPage.css для кнопок, если они не глобальные */
+.save-btn { background-color: #28a745; color: white; }
+.save-btn:hover { background-color: #218838; }
+.cancel-btn { background-color: #6c757d; color: white; }
+.cancel-btn:hover { background-color: #5a6268; }
+
+.error-message { /* Базовый стиль ошибки, если не переопределен в UserManagementPage.css */
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    text-align: center;
+}

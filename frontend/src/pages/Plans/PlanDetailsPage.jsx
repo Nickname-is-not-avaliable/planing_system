@@ -1,184 +1,241 @@
-// src/pages/Plans/PlanDetailsPage.js
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import planService from '../../services/planService'; // <--- ИЗМЕНЕНО ../ на ../../
-import userService from '../../services/userService'; // <--- ИЗМЕНЕНО ../ на ../../
-import './PlanDetailsPage.css'; // Этот импорт остается
+// src/pages/Plans/PlanDetailsPage.jsx
+import React, { useState, useEffect, useCallback } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import planService from '../../services/planService';
+import userService from '../../services/userService';
+import reportService from '../../services/reportService';
+import useAuth from '../../hooks/useAuth';
+import { translateRole } from '../../utils/authUtils';
+import './PlanDetailsPage.css'; // Убедись, что стили подключены и созданы
 
 const PlanDetailsPage = () => {
-  const { id } = useParams(); // Получаем id из URL (/plans/:id)
-  const [plan, setPlan] = useState(null);
-  const [creator, setCreator] = useState(null); // Данные создателя
-  const [executors, setExecutors] = useState([]); // Данные исполнителей
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+    const { id: planId } = useParams();
+    const { user } = useAuth(); // Текущий пользователь для проверки прав
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPlanDetails = async () => {
-      setLoading(true);
-      setError('');
-      setCreator(null);
-      setExecutors([]);
+    const [plan, setPlan] = useState(null);
+    const [creator, setCreator] = useState(null);
+    const [executors, setExecutors] = useState([]);
+    const [relatedReports, setRelatedReports] = useState([]);
 
-      try {
-        // 1. Загружаем основные данные плана
-        const planResponse = await planService.getPlanById(id);
-        const planData = planResponse.data;
-        setPlan(planData);
+    const [loading, setLoading] = useState(true); // Общий флаг загрузки страницы
+    const [error, setError] = useState(''); // Общая ошибка загрузки
 
-        // 2. Загружаем данные создателя (если есть createdById)
-        // Используем заглушку '1' если planData.createdById нет (на всякий случай)
-        // Но в твоем PlanDto он вроде есть всегда
-        const creatorId = planData.createdById || 1; // Или просто planData.createdById
-        if (creatorId) {
-          try {
-            const creatorResponse = await userService.getUserById(creatorId);
-            setCreator(creatorResponse.data);
-          } catch (userErr) {
-            console.error(`Failed to fetch creator (ID: ${creatorId}):`, userErr);
-            setCreator({ id: creatorId, fullName: `Не удалось загрузить (ID: ${creatorId})` }); // Показываем ID если не загрузилось имя
-          }
+    // Единая функция для загрузки данных пользователя
+    const fetchUserData = useCallback(async (userId, signal) => {
+        if (!userId) return null;
+        try {
+            const response = await userService.getUserById(userId, signal);
+            return response.data;
+        } catch (err) {
+            if (err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
+                console.error(`[PlanDetails] Failed to fetch user (ID: ${userId}):`, err);
+                return { id: userId, fullName: `(Пользователь ${userId} - ошибка)` }; // Возвращаем объект с ошибкой
+            }
+            return null;
+        }
+    }, []);
+
+    // Основной useEffect для загрузки всех данных страницы
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        const loadPageData = async () => {
+            setLoading(true);
+            setError('');
+            // Сброс всех состояний
+            setPlan(null); setCreator(null); setExecutors([]); setRelatedReports([]);
+
+            try {
+                // 1. Загружаем ПЛАН
+                console.log(`[PlanDetails] Fetching plan with ID: ${planId}`);
+                const planResponse = await planService.getPlanById(planId, signal);
+                const fetchedPlan = planResponse.data;
+                if (!fetchedPlan) throw new Error(`План с ID ${planId} не найден.`);
+                setPlan(fetchedPlan); // Устанавливаем план
+
+                // Промисы для параллельной загрузки связанных данных
+                const dataPromises = [];
+
+                // 2. Подготовка к загрузке СОЗДАТЕЛЯ
+                if (fetchedPlan.createdByUserId) {
+                    dataPromises.push(
+                        fetchUserData(fetchedPlan.createdByUserId, signal).then(data => {
+                            if (!signal.aborted) setCreator(data); // Устанавливаем, если не отменено
+                        })
+                    );
+                } else {
+                    setCreator(null); // Если ID нет, создатель null
+                }
+
+                // 3. Подготовка к загрузке ИСПОЛНИТЕЛЕЙ
+                if (fetchedPlan.executorUserIds && fetchedPlan.executorUserIds.length > 0) {
+                    const executorPromises = fetchedPlan.executorUserIds.map(userId =>
+                        fetchUserData(userId, signal)
+                    );
+                    dataPromises.push(
+                        Promise.all(executorPromises).then(execs => {
+                            if (!signal.aborted) setExecutors(execs.filter(Boolean));
+                        })
+                    );
+                } else {
+                    setExecutors([]);
+                }
+
+                // 4. Подготовка к загрузке СВЯЗАННЫХ ОТЧЕТОВ
+                const numericPlanId = parseInt(planId, 10);
+                dataPromises.push(
+                    reportService.getAllReports(signal).then(response => {
+                        if (!signal.aborted) {
+                            const filtered = (response.data || []).filter(r => r.planId === numericPlanId);
+                            setRelatedReports(filtered);
+                        }
+                    })
+                );
+
+                // Дожидаемся выполнения всех параллельных запросов
+                await Promise.all(dataPromises);
+
+            } catch (err) {
+                if (err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
+                    console.error("[PlanDetails] Failed to load page data:", err);
+                    setError(err.response?.data?.message || err.message || `Не удалось загрузить данные плана.`);
+                    setPlan(null); // Сбрасываем план при критической ошибке
+                } else { console.log("[PlanDetails] Page data load aborted."); }
+            } finally {
+                if (!signal.aborted) { setLoading(false); }
+            }
+        };
+
+        if (planId && !isNaN(parseInt(planId, 10))) {
+            loadPageData();
         } else {
-            setCreator({ fullName: "Не указан" }); // Если ID создателя нет в данных плана
+            setError("Некорректный ID плана в URL.");
+            setLoading(false);
         }
 
+        return () => {
+            console.log("[PlanDetails] Cleanup: Aborting fetches.");
+            controller.abort();
+        };
+    }, [planId, fetchUserData]); // Зависим от planId и стабильной fetchUserData
 
-        // 3. Загружаем данные исполнителей (если есть executorUserIds)
-        if (planData.executorUserIds && planData.executorUserIds.length > 0) {
-          // Promise.all позволяет выполнить все запросы параллельно
-          const executorPromises = planData.executorUserIds.map(userId =>
-            userService.getUserById(userId)
-              .then(res => res.data) // Возвращаем данные пользователя
-              .catch(err => {
-                console.error(`Failed to fetch executor (ID: ${userId}):`, err);
-                return { id: userId, fullName: `Не удалось загрузить (ID: ${userId})` }; // Заглушка при ошибке
-              })
-          );
-          const executorData = await Promise.all(executorPromises);
-          setExecutors(executorData);
+    // Обработчик удаления плана
+    const handleDeletePlan = async () => {
+        if (!plan || !user) return;
+        if (user.id !== plan.createdByUserId && user.userRole !== 'ADMIN') {
+            alert("У вас нет прав на удаление этого плана."); return;
         }
-
-      } catch (err) {
-        console.error("Failed to fetch plan details:", err);
-        setError(`Не удалось загрузить данные плана (ID: ${id}). Возможно, план не найден.`);
-        setPlan(null); // Сбрасываем план при ошибке
-      } finally {
-        setLoading(false);
-      }
+        if (window.confirm(`Вы уверены, что хотите удалить план "${plan.name}"? Это действие необратимо.`)) {
+            setError('');
+            try {
+                await planService.deletePlan(plan.id);
+                navigate('/plans', { state: { message: 'План успешно удален!' } });
+            } catch (err) {
+                console.error("Failed to delete plan:", err);
+                setError(err.response?.data?.message || err.message || 'Не удалось удалить план.');
+            }
+        }
     };
 
-    fetchPlanDetails();
-  }, [id]); // Перезагружаем данные при смене id в URL
+    // Форматирование даты
+    const formatDate = (dateString) => {
+        if (!dateString) return '-';
+        try { return new Date(dateString.split('T')[0]).toLocaleDateString(); }
+        catch { return dateString; }
+    };
 
-  // Отображение состояния загрузки
-  if (loading) {
-    return <p>Загрузка деталей плана...</p>;
-  }
+    // --- РЕНДЕРИНГ ---
+    if (loading) return <div className="loading-container"><p>Загрузка деталей плана...</p></div>;
+    if (error && !plan) return <div className="error-container"><p className="error-message">{error}</p></div>;
+    if (!plan) return <div className="not-found-container"><p>План не найден.</p></div>;
 
-  // Отображение ошибки
-  if (error) {
-    return <p className="error-message">{error}</p>;
-  }
+    const canModify = user && (user.id === plan.createdByUserId || user.userRole === 'ADMIN');
 
-  // Отображение, если план не найден (но не было ошибки сети)
-  if (!plan) {
-    return <p>План с номером {id} не найден.</p>;
-  }
+    return (
+        <div className="plan-details-container">
+            <header className="plan-details-header">
+                <h2>{plan.name || 'Детали плана'}</h2>
+                <Link to="/plans" className="back-link">
+                    ← К списку планов
+                </Link>
+            </header>
 
-  // Форматирование дат для вывода
-  const formatDate = (dateString) => {
-    if (!dateString) return '-';
-    try {
-      // Проверяем, содержит ли строка время (из PlanDto createdAt)
-      if (dateString.includes('T')) {
-        return new Date(dateString).toLocaleString(); // Дата и время
-      } else {
-        // Преобразуем YYYY-MM-DD в объект Date, учитывая UTC
-        const [year, month, day] = dateString.split('-');
-        // new Date(year, monthIndex, day) может дать неверную дату из-за часового пояса
-        // Используем UTC для корректного отображения даты как есть
-        const date = new Date(Date.UTC(year, month - 1, day));
-        return date.toLocaleDateString(); // Только дата
-      }
-    } catch (e) {
-        console.error("Date formatting error:", e);
-        return dateString; // Возвращаем как есть, если ошибка
-    }
-  };
+            {error && <p className="error-message main-error">{error}</p>}
 
-  // Рендеринг деталей плана
-  return (
-    <div className="plan-details-container">
-      <h2>Детали плана: {plan.name}</h2>
-       <Link to="/plans" style={{ marginBottom: '20px', display: 'inline-block' }}>
-          ← Вернуться к списку планов
-       </Link>
+            {canModify && (
+                <div className="plan-actions top-actions">
+                    <Link to={`/plans/${plan.id}/edit`} className="action-btn edit-btn">
+                        Редактировать план
+                    </Link>
+                    <button onClick={handleDeletePlan} className="action-btn delete-btn">
+                        Удалить план
+                    </button>
+                </div>
+            )}
 
-      <div className="plan-details-grid">
-        <div className="detail-item">
-          <span className="detail-label">Номер плана:</span>
-          <span className="detail-value">{plan.id}</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Название:</span>
-          <span className="detail-value">{plan.name}</span>
-        </div>
-        <div className="detail-item detail-item-full"> {/* Занимает всю ширину */}
-          <span className="detail-label">Описание:</span>
-          <span className="detail-value">{plan.description || <i>Нет описания</i>}</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Целевое значение:</span>
-          <span className="detail-value">{plan.targetValue ?? '-'}</span> {/* Используем ?? для обработки null/undefined */}
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Дата начала:</span>
-          <span className="detail-value">{formatDate(plan.startDate)}</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Дата окончания:</span>
-          <span className="detail-value">{formatDate(plan.endDate)}</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Создатель:</span>
-          <span className="detail-value">
-             {creator ? creator.fullName : 'Загрузка...'}
-          </span>
-        </div>
-         <div className="detail-item">
-          <span className="detail-label">Дата создания:</span>
-          <span className="detail-value">{formatDate(plan.createdAt)}</span>
-        </div>
-        <div className="detail-item detail-item-full">
-          <span className="detail-label">Исполнители:</span>
-           {executors.length > 0 ? (
-             <ul className="executors-list">
-             {executors.map(ex => (
-             <li key={ex.id}>
-                {ex?.fullName && !ex.fullName.startsWith('(Ошибка') ? ex.fullName : 'Неизвестный исполнитель'}
-                {ex?.email ? ` (${ex.email})` : ''}
-              </li>
-             ))}
-             </ul>
-           ) : (
-             <span className="detail-value"><i>Нет назначенных исполнителей</i></span>
-           )}
-        </div>
+            <section className="plan-info-section">
+                <h3>Основная информация</h3>
+                <div className="plan-details-grid">
+                    <div className="detail-item"><span className="detail-label">ID Плана:</span> {plan.id}</div>
+                    <div className="detail-item"><span className="detail-label">Название:</span> {plan.name}</div>
+                    <div className="detail-item detail-item-full"><span className="detail-label">Описание:</span> {plan.description || <i>Нет описания</i>}</div>
+                    <div className="detail-item"><span className="detail-label">Целевое значение:</span> {plan.targetValue ?? '-'}</div>
+                    <div className="detail-item"><span className="detail-label">Дата начала:</span> {formatDate(plan.startDate)}</div>
+                    <div className="detail-item"><span className="detail-label">Дата окончания:</span> {formatDate(plan.endDate)}</div>
+                    <div className="detail-item">
+                        <span className="detail-label">Создатель:</span>
+                        {creator ? (creator.fullName || `Пользователь ${creator.id}`) : (plan.createdByUserId ? 'Загрузка...' : 'Не указан')}
+                    </div>
+                    <div className="detail-item detail-item-full">
+                        <span className="detail-label">Исполнители ({executors.length}):</span>
+                        {executors.length > 0 ? (
+                            <ul className="executors-list">
+                                {executors.map(ex => (
+                                    <li key={ex.id}>{ex.fullName || `Пользователь ${ex.id}`} ({translateRole(ex.userRole || 'UNKNOWN')})</li>
+                                ))}
+                            </ul>
+                        ) : (<i>Исполнители не назначены или идет загрузка...</i>)}
+                    </div>
+                    <div className="detail-item"><span className="detail-label">Дата создания плана:</span> {formatDate(plan.createdAt)}</div>
+                </div>
+            </section>
 
-        {/* TODO: Здесь можно добавить раздел для связанных отчетов или документов */}
-         {/* <div className="related-items-section">
-             <h3>Связанные отчеты/документы</h3>
-             <p>...</p>
-         </div> */}
-
-      </div>
-       {/* TODO: Добавить кнопки редактирования/удаления (с проверкой роли позже) */}
-       <div className="plan-actions">
-           {/* <button>Редактировать</button> */}
-           {/* <button style={{backgroundColor: '#dc3545'}}>Удалить</button> */}
-       </div>
-    </div>
-  );
+            <section className="related-reports-section">
+                <h3>Связанные квартальные отчеты ({relatedReports.length})</h3>
+                {relatedReports.length > 0 ? (
+                    <table className="related-reports-table">
+                        <thead>
+                            <tr>
+                                <th>Год</th>
+                                <th>Квартал</th>
+                                <th>Факт. значение</th>
+                                <th>Оценка</th>
+                                {/* TODO: Загружать и отображать имя отчитавшегося пользователя */}
+                                <th>Отчитался (ID)</th>
+                                <th>Дата отчета</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {relatedReports.map(reportItem => (
+                                <tr key={reportItem.id}>
+                                    <td>{reportItem.year}</td>
+                                    <td>{reportItem.quarter}</td>
+                                    <td>{reportItem.actualValue ?? '-'}</td>
+                                    <td>{reportItem.analystAssessmentScore ?? <i style={{color: '#888'}}>Нет</i>}</td>
+                                    <td>{reportItem.reportingUserId}</td>
+                                    <td>{formatDate(reportItem.createdAt)}</td>
+                                    <td><Link to={`/reports/${reportItem.id}`}>Детали отчета</Link></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (<p>По этому плану еще не было подано отчетов.</p>)}
+            </section>
+        </div>
+    );
 };
 
 export default PlanDetailsPage;

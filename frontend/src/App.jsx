@@ -1,4 +1,4 @@
-// src/App.js
+// src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
@@ -13,8 +13,10 @@ import PlanListPage from './pages/Plans/PlanListPage';
 import CreatePlanPage from './pages/Plans/CreatePlanPage';
 import PlanDetailsPage from './pages/Plans/PlanDetailsPage';
 import ReportListPage from './pages/Reports/ReportListPage';
-import CreateReportPage from './pages/Reports/CreateReportPage'; // Страница создания
-import ReportDetailsPage from './pages/Reports/ReportDetailsPage'; // Страница деталей
+import CreateReportPage from './pages/Reports/CreateReportPage'; 
+import ReportDetailsPage from './pages/Reports/ReportDetailsPage'; 
+import UserManagementPage from './pages/Admin/UserManagementPage';
+import EditPlanPage from './pages/Plans/components/EditPlanPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -36,6 +38,7 @@ function App() {
             {/* Планы */}
             <Route path="/plans" element={ <RequireAuth> <PlanListPage /> </RequireAuth> } />
             <Route path="/plans/new" element={ <RequireAuth> <CreatePlanPage /> </RequireAuth> } />
+            <Route path="/plans/:id/edit" element={ <RequireAuth> <EditPlanPage /> </RequireAuth> } />
             <Route path="/plans/:id" element={ <RequireAuth> <PlanDetailsPage /> </RequireAuth> } />
 
             {/* --- Отчеты (ВАЖЕН ПОРЯДОК!) --- */}
@@ -45,6 +48,15 @@ function App() {
             {/* Затем путь с параметром ":id" */}
             <Route path="/reports/:id" element={ <RequireAuth> <ReportDetailsPage /> </RequireAuth> } />
              {/* --- Конец секции Отчеты --- */}
+
+            <Route
+                path="/admin/users"
+                element={
+                  <RequireAuth allowedRoles={['ADMIN']}> {/* Защищаем ролью ADMIN */}
+                    <UserManagementPage />
+                  </RequireAuth>
+                }
+            />
 
             {/* Роут не найден */}
             <Route path="*" element={<NotFoundPage />} />

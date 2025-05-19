@@ -1,4 +1,4 @@
-// src/components/Layout.js
+// src/components/Layout.jsx
 import React, { useEffect } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
@@ -48,6 +48,9 @@ const Layout = () => {
               <Link to="/">Главная</Link>
               <Link to="/plans">Планы</Link>
               <Link to="/reports">Отчеты</Link>
+              {user.userRole === 'ADMIN' && (
+                <Link to="/admin/users">Управление пользователями</Link>
+              )}
             </>
           )}
         </nav>

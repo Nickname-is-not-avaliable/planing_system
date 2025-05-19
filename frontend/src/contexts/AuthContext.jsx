@@ -1,74 +1,89 @@
 // src/contexts/AuthContext.js
 import React, { createContext, useState, useEffect } from 'react';
-import authService from '../services/authService';
-import api from '../services/api'; // Импортируем api для интерцептора
+import authService from '../services/authService'; // Путь: ../services/
+import api from '../services/api';                 // Путь: ../services/
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  // user будет хранить UserDto { id, email, fullName, userRole }
+  // user будет хранить UserDto { id, email, fullName, userRole } или null
   const [user, setUser] = useState(null);
-  // Состояние для токена (даже если его пока нет, для будущего JWT)
+  // Состояние для токена (для будущего JWT, сейчас может быть null)
   const [token, setToken] = useState(localStorage.getItem('authToken') || null);
-  const [loading, setLoading] = useState(true); // Для проверки при загрузке
+  // Флаг для отслеживания начальной загрузки пользователя из localStorage
+  const [loading, setLoading] = useState(true);
 
-  // При изменении токена обновляем заголовок в api instance
+  // Эффект для управления заголовком Authorization при изменении токена
   useEffect(() => {
+      console.log("AuthContext: Token changed to", token);
       if (token) {
           api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          localStorage.setItem('authToken', token);
+          localStorage.setItem('authToken', token); // Сохраняем токен
+          console.log("AuthContext: Authorization header set with token.");
       } else {
           delete api.defaults.headers.common['Authorization'];
-          localStorage.removeItem('authToken');
+          localStorage.removeItem('authToken'); // Удаляем токен
+          console.log("AuthContext: Authorization header removed.");
       }
-  }, [token]);
+  }, [token]); // Зависит от токена
 
-
-  // Загрузка пользователя из localStorage при запуске
+  // Эффект для загрузки пользователя из localStorage при первом монтировании компонента
   useEffect(() => {
     const loadUserFromStorage = async () => {
-      const storedToken = localStorage.getItem('authToken'); // Загружаем токен
-      const userData = localStorage.getItem('authUser');
-      if (userData) { // Если есть данные пользователя
+      console.log("AuthContext: Attempting to load user from localStorage...");
+      const storedToken = localStorage.getItem('authToken');
+      const userDataString = localStorage.getItem('authUser');
+
+      if (userDataString) {
          try {
-           const parsedUser = JSON.parse(userData);
-           setUser(parsedUser); // Устанавливаем пользователя
-           // Если был токен, устанавливаем его тоже (важно для интерцептора)
-           if (storedToken) {
-              setToken(storedToken);
+           const parsedUser = JSON.parse(userDataString);
+           console.log("AuthContext: User data found in localStorage:", parsedUser);
+           setUser(parsedUser);
+           // Если пользователь загружен, а токен тоже есть в хранилище, установим его в state
+           // Это важно, чтобы useEffect выше установил заголовок авторизации
+           if (storedToken && !token) { // Устанавливаем, только если он еще не установлен
+             setToken(storedToken);
            }
            // TODO: Опционально в будущем: Проверить валидность токена/сессии запросом к /api/users/me
          } catch (error) {
-           console.error("Failed to parse user data from storage", error);
+           console.error("AuthContext: Failed to parse user data from localStorage", error);
            localStorage.removeItem('authUser');
-           localStorage.removeItem('authToken'); // Чистим и токен
+           localStorage.removeItem('authToken'); // Также чистим токен, если данные пользователя некорректны
+           setUser(null); // Убеждаемся, что user сброшен
+           setToken(null);  // И токен тоже
          }
+      } else {
+          console.log("AuthContext: No user data found in localStorage.");
       }
-      setLoading(false);
+      setLoading(false); // Завершаем начальную загрузку
     };
     loadUserFromStorage();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Пустой массив зависимостей - выполнить один раз при монтировании
 
-  // Обновленная функция login
+  // Функция входа в систему
   const login = async (email, password) => {
+    console.log("AuthContext: Attempting login...");
     try {
       const response = await authService.login(email, password);
       // Ожидаем, что response.data - это UserDto { id, email, fullName, userRole }
       const loggedInUser = response.data;
+      console.log("AuthContext: Login successful, user data:", loggedInUser);
 
-      // !!! Обработка токена (ПОКА ЗАГЛУШКА, но структура готова) !!!
-      // Если бы бэкенд возвращал токен в теле: const { token, ...userData } = response.data;
-      // Если бы токен был в хедере: const newToken = response.headers['authorization']?.split(' ')[1];
-      const newToken = null; // <--- Пока нет токена
+      // --- Обработка токена (задел на будущее) ---
+      // Если бэкенд возвращал токен в теле: const { token: newToken, ...userDataFromResponse } = response.data; const loggedInUser = userDataFromResponse;
+      // Если токен в хедере: const newToken = response.headers['authorization']?.split(' ')[1];
+      const newToken = null; // <--- Пока нет реального JWT
+      // ---
 
       localStorage.setItem('authUser', JSON.stringify(loggedInUser));
       setUser(loggedInUser);
-      setToken(newToken); // Устанавливаем токен (будет null пока)
+      setToken(newToken); // Устанавливаем токен (будет null, пока не реализован JWT)
 
       return true; // Успех
     } catch (error) {
-      console.error("Login failed:", error);
-      // Чистим всё при ошибке
+      console.error("AuthContext: Login failed:", error.response?.data || error.message);
+      // Очищаем все при ошибке
       localStorage.removeItem('authUser');
       localStorage.removeItem('authToken');
       setUser(null);
@@ -77,18 +92,43 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Функция выхода из системы
   const logout = () => {
+    console.log("AuthContext: Logging out user.");
     // TODO: Опционально: вызвать эндпоинт выхода на бэкенде, если он появится
     localStorage.removeItem('authUser');
     localStorage.removeItem('authToken');
     setUser(null);
-    setToken(null);
+    setToken(null); // Сбрасываем токен
   };
 
-  // Значение контекста теперь включает token
-  const value = { user, token, login, logout, loading };
+  // Функция для обновления данных текущего пользователя в контексте (и localStorage)
+  const updateUserInContext = (newUserData) => {
+    // newUserData должен быть объектом, содержащим поля пользователя,
+    // которые нужно обновить в контексте (обычно это UserDto после успешного PATCH/PUT).
+    if (newUserData && typeof newUserData.id === 'number') { // Простая проверка, что данные валидны
+        console.log("AuthContext: Updating user data in context and localStorage with:", newUserData);
+        // Лучше всего обновить user, сохранив предыдущие поля, если newUserData частичный
+        // Но если newUserData это полный UserDto, то просто setUser(newUserData)
+        setUser(currentUser => ({ ...currentUser, ...newUserData })); // Сливаем, если newUserData может быть неполным
+        // setUser(newUserData); // Если newUserData всегда полный UserDto
+        localStorage.setItem('authUser', JSON.stringify(newUserData)); // Сохраняем полный обновленный объект
+    } else {
+        console.warn("AuthContext: Attempted to update user with invalid or missing data", newUserData);
+    }
+  };
 
-  // Не рендерим детей, пока идет проверка пользователя при запуске
+  // Значение, предоставляемое контекстом
+  const value = {
+      user,
+      token,    // Предоставляем токен, даже если он пока не используется активно для JWT
+      loading,  // Флаг начальной загрузки пользователя
+      login,
+      logout,
+      updateUserInContext // <--- Добавлена функция обновления
+    };
+
+  // Не рендерим дочерние компоненты, пока идет начальная загрузка пользователя
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}

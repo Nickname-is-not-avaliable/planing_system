@@ -1,0 +1,95 @@
+/* src/pages/Admin/UserManagementPage.css */
+.user-management-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.user-management-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.users-table th,
+.users-table td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.users-table thead th {
+    background-color: #f0f2f5; /* Светло-серый фон для заголовков */
+    font-weight: 600;
+    color: #555;
+}
+
+.users-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.users-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.users-table select {
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    min-width: 150px; /* Чтобы селект не был слишком узким */
+}
+
+.action-btn {
+    padding: 6px 12px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+.action-btn:last-child {
+    margin-right: 0;
+}
+
+.edit-btn { background-color: #ffc107; color: #333;}
+.edit-btn:hover { background-color: #e0a800; }
+
+.delete-btn { background-color: #dc3545; color: white; }
+.delete-btn:hover { background-color: #c82333; }
+
+.save-btn { background-color: #28a745; color: white; }
+.save-btn:hover { background-color: #218838; }
+
+.cancel-btn { background-color: #6c757d; color: white; }
+.cancel-btn:hover { background-color: #5a6268; }
+
+.action-btn:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Общая ошибка над таблицей */
+.main-error {
+    margin-bottom: 15px;
+}
+
+/* Ошибка внутри строки (если будем добавлять) */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-align: center;
+}
