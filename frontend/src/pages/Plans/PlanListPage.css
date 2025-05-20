@@ -1,0 +1,99 @@
+/* PlanListPage.css */
+
+.plan-list-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+  font-family: 'Inter', sans-serif;
+  color: #222;
+}
+
+.plan-list-container h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #004a99;
+}
+
+.create-plan-btn {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1.3rem;
+  background: linear-gradient(135deg, #8fc1ff, #d7e9ff);
+  border: none;
+  border-radius: 1rem;
+  font-weight: 600;
+  color: #004a99;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  user-select: none;
+}
+
+.create-plan-btn:hover {
+  background: #c3deff;
+  box-shadow: 0 6px 14px rgba(64, 130, 255, 0.3);
+}
+
+.plan-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.plan-table th,
+.plan-table td {
+  padding: 0.85rem 1.2rem;
+  text-align: left;
+  font-weight: 500;
+  border-bottom: 1px solid #d0d7de;
+}
+
+.plan-table thead {
+  background: linear-gradient(135deg, #c8dcff, #e5f0ff);
+  color: #003366;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.plan-table tbody tr:hover {
+  background-color: rgba(143, 193, 255, 0.2);
+  cursor: pointer;
+}
+
+.plan-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.action-link {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  transition: color 0.25s ease;
+}
+
+.action-link:hover {
+  color: #0c47b7;
+  text-decoration: underline;
+}
+
+/* Стили для сообщений загрузки и ошибок */
+.loading-text,
+.error-text {
+  text-align: center;
+  font-size: 1.15rem;
+  margin-top: 3rem;
+  color: #555;
+}
+
+.error-text {
+  color: #b00020;
+  font-weight: 600;
+}

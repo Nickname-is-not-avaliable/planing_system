@@ -77,7 +77,7 @@ const EditUserModal = ({ user, onClose, onSave }) => {
     return (
         <div className="modal-overlay" onClick={onClose}> {/* Закрытие по клику на оверлей */}
             <div className="modal-content" onClick={(e) => e.stopPropagation()}> {/* Предотвращение закрытия по клику на контент */}
-                <h2>Редактирование пользователя: {user.email}</h2>
+                <h2>Редактирование пользователя {user.email}</h2>
                 {error && <p className="error-message modal-error">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">

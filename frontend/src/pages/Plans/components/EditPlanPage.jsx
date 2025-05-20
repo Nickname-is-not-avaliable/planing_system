@@ -5,6 +5,7 @@ import planService from '../../../services/planService';
 import userService from '../../../services/userService';
 import useAuth from '../../../hooks/useAuth';
 import { translateRole } from '../../../utils/authUtils';
+import './EditPlanPage.css'; 
 
 const EditPlanPage = () => {
     const { id: planId } = useParams();

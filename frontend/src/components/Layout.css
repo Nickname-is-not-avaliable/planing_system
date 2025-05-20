@@ -1,113 +1,139 @@
-/* Layout.css */
-
+/* src/components/Layout.css */
 .layout-container {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(to bottom right, #f6f9fc, #e3f0ff);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh; /* Растягиваем на всю высоту экрана */
 }
 
-/* ---------------- HEADER ---------------- */
-
 .app-header {
+  background: #2c3e50; /* Темно-сине-серый, более насыщенный */
+  /* background: linear-gradient(to right, #3A1C71, #D76D77, #FFAF7B); Пример градиента */
+  padding: 0.8rem 2rem; /* Отступы */
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #ffffffcc;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #ddd;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  position: sticky;
+  flex-wrap: wrap; /* Для адаптивности */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: sticky; /* Делаем шапку "липкой" */
   top: 0;
-  z-index: 1000;
+  z-index: 1020; /* Поверх остального контента */
 }
 
-.logo-link {
-  font-size: 1.5rem;
+.app-header .logo-link {
   font-weight: 700;
-  color: #222;
+  font-size: 1.5em;
+  color: white;
   text-decoration: none;
-  background: linear-gradient(90deg, #176ab8, #18c4be);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: transform 0.2s ease;
+  letter-spacing: 0.5px;
 }
-.logo-link:hover {
-  transform: scale(1.05);
+.app-header .logo-link:hover {
+  opacity: 0.9;
+  text-decoration: none;
 }
 
-
-.logo-icon-wrap {
+.app-header nav {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  position: relative;
+  gap: 1.5rem; /* Отступ между ссылками */
+  margin: 0.5rem 0; /* Для переноса на малых экранах */
 }
 
-/* ---------------- ШЕСТЕРЁНКА ---------------- */
-.logo-icon {
-  color: #344a59;
-  animation: softSpin 4s infinite ease-in-out;
-  transform-origin: center;
-}
-
-
-/* ---------------- NAVIGATION ---------------- */
-
-nav a {
-  margin: 0 0.7rem;
+.app-header nav a {
+  color: #bdc3c7; /* Светло-серый для ссылок */
   text-decoration: none;
-  color: #444;
+  padding: 0.3rem 0;
   font-weight: 500;
+  position: relative;
   transition: color 0.2s ease;
 }
 
-nav a:hover {
-  color: #4a90e2;
+.app-header nav a::after { /* Подчеркивание при наведении */
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  display: block;
+  margin-top: 3px;
+  right: 0;
+  background: #ecf0f1; /* Ярче для подчеркивания */
+  transition: width 0.3s ease;
+  -webkit-transition: width 0.3s ease;
 }
 
-/* ---------------- USER INFO ---------------- */
+.app-header nav a:hover::after {
+  width: 100%;
+  left: 0;
+  background: #ecf0f1;
+}
+
+.app-header nav a:hover,
+.app-header nav a.active { /* Если будешь использовать NavLink для активных ссылок */
+  color: #ecf0f1; /* Ярче при наведении/активности */
+  text-decoration: none;
+}
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  color: #333;
-  font-size: 0.95rem;
+  gap: 1rem; /* Отступ между именем и кнопкой */
 }
 
-.user-info button {
-  background-color: #f04e4e;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
+.user-info span {
   font-weight: 500;
-  transition: background-color 0.3s ease;
+  color: #ecf0f1;
 }
 
-.user-info button:hover {
-  background-color: #d43c3c;
+.user-info button,
+.user-info a /* Для ссылки "Войти" */ {
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.15); /* Полупрозрачная кнопка */
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--border-radius-md);
+  font-weight: 500;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  text-decoration: none; /* Для Link */
+}
+.user-info button:hover,
+.user-info a:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: white; /* Для Link */
+  text-decoration: none;
 }
 
-/* ---------------- MAIN CONTENT ---------------- */
-
+/* Основной контент */
 .main-content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+  flex-grow: 1; /* Занимает все доступное пространство */
+  /* Отступ, чтобы контент не заезжал под "липкую" шапку, если шапка фиксированная или sticky.
+     Высота шапки может меняться, подбирай значение. */
+  /* padding-top: 60px; */ /* Пример, если шапка имеет фиксированную высоту */
+  background: var(--page-bg-gradient); /* Применяем градиент к основной области */
 }
 
-/* ---------------- FOOTER ---------------- */
-
+/* Подвал */
 .app-footer {
+  background-color: #34495e; /* Темнее, чем шапка */
+  padding: 1.5rem 2rem;
   text-align: center;
-  font-size: 0.85rem;
-  color: #888;
-  background: #fafafa;
-  padding: 1rem;
-  border-top: 1px solid #ddd;
+  color: #bdc3c7; /* Светло-серый текст */
+  font-size: 0.9em;
+  /* border-top: 1px solid #46627f; */
+}
+
+/* Адаптивность для шапки */
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .app-header nav {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    gap: 1rem;
+  }
+  .user-info {
+    margin-top: 0.5rem;
+  }
 }

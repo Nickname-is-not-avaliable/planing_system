@@ -39,7 +39,7 @@ const Layout = () => {
         transition={{ duration: 0.6 }}
       >
         <Link to={user ? "/" : "/login"} className="logo-link">
-            <span>АС Мониторинга Планов</span>
+            <span>АС Контроля Планов</span>
         </Link>
 
         <nav>
@@ -50,6 +50,9 @@ const Layout = () => {
               <Link to="/reports">Отчеты</Link>
               {user.userRole === 'ADMIN' && (
                 <Link to="/admin/users">Управление пользователями</Link>
+              )}
+              {(user.userRole === 'ADMIN' || user.userRole === 'ANALYST') && (
+                <Link to="/analytics">Аналитика</Link>
               )}
             </>
           )}

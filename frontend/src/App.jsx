@@ -18,6 +18,7 @@ import ReportDetailsPage from './pages/Reports/ReportDetailsPage';
 import UserManagementPage from './pages/Admin/UserManagementPage';
 import EditPlanPage from './pages/Plans/components/EditPlanPage';
 import NotFoundPage from './pages/NotFoundPage';
+import AnalyticsPage from './pages/Analytics/AnalyticsPage';
 
 function App() {
   console.log("Rendering App - Applying route protection");
@@ -54,6 +55,15 @@ function App() {
                 element={
                   <RequireAuth allowedRoles={['ADMIN']}> {/* Защищаем ролью ADMIN */}
                     <UserManagementPage />
+                  </RequireAuth>
+                }
+            />
+
+                        <Route
+                path="/analytics"
+                element={
+                  <RequireAuth allowedRoles={['ADMIN', 'ANALYST']}> 
+                    <AnalyticsPage />
                   </RequireAuth>
                 }
             />

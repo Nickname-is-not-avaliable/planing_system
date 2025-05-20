@@ -5,7 +5,7 @@ import userService from '../../../services/userService';   // Путь: ../../..
 import useAuth from '../../../hooks/useAuth';            // Путь: ../../../hooks/
 
 // Роли, которым разрешено ставить/менять оценку
-const ASSESSMENT_ALLOWED_ROLES = ['ADMIN', 'ANALYST', 'MANAGER']; 
+const ASSESSMENT_ALLOWED_ROLES = ['ADMIN', 'ANALYST']; 
 
 const AssessmentSection = ({ report, assessingUser, onAssessmentUpdate }) => {
     const { user } = useAuth(); // Текущий пользователь

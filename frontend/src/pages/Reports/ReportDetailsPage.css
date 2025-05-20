@@ -1,261 +1,139 @@
 /* src/pages/Reports/ReportDetailsPage.css */
+
+/* ReportDetailsPage.css */
+
+/* Контейнер всей страницы */
 .report-details-container {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 25px;
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.report-details-container h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #333;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 15px;
+/* Заголовок страницы */
+.report-details-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-/* Используем grid для основного контента */
+.report-details-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.back-link {
+  font-size: 0.95rem;
+  color: #2980b9;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+.back-link:hover {
+  opacity: 0.85;
+  text-decoration: underline;
+}
+
+/* Ошибки */
+.error-message {
+  color: #e74c3c;
+  font-weight: 500;
+  margin: 0.5rem 0;
+}
+.main-error {
+  margin-top: 1rem;
+}
+
+/* Кнопка удаления */
+.report-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-btn.delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.9rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.action-btn.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Сетка секций */
 .report-details-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Адаптивная сетка */
-  gap: 25px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
-/* Секции внутри грида */
-.detail-section {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 6px;
-  border: 1px solid #eee;
-}
-
-.detail-section h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 1.1em;
-    color: #444;
-}
-
-/* Секция оценки занимает всю ширину */
-.detail-section-full {
-    grid-column: 1 / -1;
-}
-
-
-.detail-item {
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-
-.detail-label {
-  font-weight: bold;
-  color: #555;
-  margin-right: 8px; /* Небольшой отступ от значения */
-  display: inline-block; /* Чтобы margin-right работал */
-  min-width: 100px; /* Выравнивание значений */
-}
-
-.detail-value {
-  color: #333;
-}
-
-/* Особый стиль для оценки */
-.assessment-score {
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-/* Ссылка "Вернуться к списку" */
-.report-details-container > a { /* Прямой потомок контейнера */
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-.report-details-container > a:hover {
-    color: #0056b3;
-    text-decoration: underline;
-}
-/* Ссылки внутри деталей (на план) */
-.detail-value a {
-    color: #0056b3; /* Немного темнее */
-    text-decoration: none;
-}
-.detail-value a:hover {
-    text-decoration: underline;
-}
-
-
-/* Разделы для документов и комментариев */
-.related-documents-section,
-.comments-section {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #e5e5e5;
-}
-
-.related-documents-section h3,
-.comments-section h3 {
-    margin-bottom: 15px;
-    color: #444;
-}
-
-
-/* Используем существующий стиль для ошибок */
-.error-message {
-    color: #dc3545;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 10px 15px;
-    border-radius: 4px;
-    text-align: center;
-    margin: 15px 0;
-}
-
-/* TODO: Стили для формы оценки, списка документов, комментариев... */
-.assessment-form {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px dashed #ccc;
-}
-.assessment-form label { margin-right: 10px;}
-.assessment-form input { width: 60px; margin-right: 10px; padding: 5px;}
-.assessment-form button { padding: 5px 10px; }
-
-/* Стили для формы оценки */
-.assessment-form {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px dashed #ccc;
-  background-color: #f0f8ff; /* Легкий фон для выделения */
-  padding: 15px;
-  border-radius: 5px;
-}
-
-.assessment-form .form-group {
+/* Общий стиль для секций */
+.report-section {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem 1.25rem;
   display: flex;
-  align-items: center;
-  gap: 10px; /* Отступ между label и input */
-  margin-bottom: 15px;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
-.assessment-form label {
-  font-weight: bold;
-  color: #555;
-  margin-bottom: 0; /* Убираем стандартный отступ label */
+/* Подзаголовки в секциях */
+.report-section h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 0.5rem;
 }
 
-.assessment-form input[type="number"] {
-  width: 80px; /* Фиксированная ширина для поля оценки */
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+/* Строки в секции */
+.report-info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.95rem;
 }
 
-.assessment-form button {
-  padding: 8px 15px;
-  background-color: #ffc107; /* Желтый для оценки */
-  color: #333;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.2s ease;
-}
-.assessment-form button:hover {
-  background-color: #e0a800;
-}
-.assessment-form button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
-  color: #666;
+.report-info-label {
+  color: #7f8c8d;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
-/* Стиль для ошибки внутри формы оценки */
-.assessment-error {
-  margin-top: 10px;
-  margin-bottom: 0; /* Убираем лишний отступ снизу */
-  padding: 8px 10px; /* Меньше padding */
-  font-size: 0.9em;
+.report-info-value {
+  color: #2c3e50;
+  text-align: right;
+  word-break: break-word;
+  max-width: 60%;
 }
 
-/* Используем существующий стиль для общей ошибки страницы */
-.error-message {
-  /* ... (остается как есть) ... */
-  margin: 15px 0; /* Добавляем отступ сверху/снизу для общей ошибки */
+/* Адаптивность */
+@media (max-width: 600px) {
+  .report-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .report-info-value {
+    text-align: left;
+    max-width: 100%;
+  }
 }
 
-/* Раздел Комментарии */
+/* Документы и комментарии – если используются отдельные компоненты, можно тоже добавить базовые стили */
+.documents-section,
 .comments-section {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e5e5;
+  margin-top: 2rem;
 }
 
-.comments-section h3 {
-  margin-bottom: 20px;
-  color: #444;
-}
-
-/* Форма добавления комментария */
-.comment-form {
-  margin-bottom: 30px;
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 6px;
-  border: 1px solid #eee;
-}
-
-.comment-form .form-group {
-  margin-bottom: 15px;
-}
-
-.comment-form label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #555;
-}
-
-.comment-form textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-size: 1rem;
-  resize: vertical;
-  min-height: 80px;
-}
-
-.comment-form textarea:disabled {
-  background-color: #eee;
-  cursor: not-allowed;
-}
-
-.comment-form button {
-  padding: 10px 18px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.2s ease;
-}
-.comment-form button:hover {
-  background-color: #0056b3;
-}
-.comment-form button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
-}
 
 /* Список комментариев */
 .comments-list {

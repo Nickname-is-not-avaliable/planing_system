@@ -1,74 +1,183 @@
 /* src/pages/Reports/ReportListPage.css */
+
 .report-list-container {
-  margin: 20px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .report-list-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
 }
 
 .report-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.report-table thead {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  font-weight: 600;
+  text-align: left;
 }
 
 .report-table th,
 .report-table td {
-  border: 1px solid #ddd;
-  padding: 10px 12px;
-  text-align: left;
-  vertical-align: middle;
-}
-
-.report-table thead th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-  color: #333;
-}
-
-.report-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
 }
 
 .report-table tbody tr:hover {
-  background-color: #f1f1f1;
+  background: rgba(0, 0, 0, 0.025);
 }
 
-.report-table a {
-  color: #007bff;
+.action-btn {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  background-color: #2c3e50;
+  color: #fff;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: #34495e;
+  transform: scale(1.02);
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.action-link {
+  color: #3498db;
+  font-weight: 500;
   text-decoration: none;
-  margin-right: 10px; /* Отступ между ссылками/кнопками действий */
+  position: relative;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.5rem;
+  transition: background 0.2s ease;
 }
 
-.report-table a:hover {
+.action-link:hover {
+  background: rgba(52, 152, 219, 0.1);
   text-decoration: underline;
 }
 
-/* Стили для кнопки создания (можно вынести общие стили кнопок) */
-.report-list-container button {
-    padding: 8px 15px;
-    background-color: #28a745; /* Зеленый */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.2s ease;
-}
-.report-list-container button:hover {
-    background-color: #218838;
+.list-delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.9rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-/* Используем существующий стиль для ошибок */
-.error-message {
-    color: #dc3545;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 10px 15px;
-    border-radius: 4px;
-    text-align: center;
-    margin-top: 15px;
+.list-delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.error-message.main-error {
+  color: #c0392b;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.loading-names-indicator {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.sortable-table thead th {
+    cursor: pointer;
+    user-select: none;
+    /* Убираем display: flex с самого th */
+    /* Убираем padding-right, так как внутренний div будет управлять отступами */
+    padding: var(--spacing-md) var(--spacing-sm); /* Оставим вертикальный и небольшой горизонтальный padding */
+    text-align: left; /* Восстанавливаем выравнивание по умолчанию для table-cell */
+    vertical-align: middle; /* Стандартное вертикальное выравнивание */
+    white-space: nowrap; /* Предотвращаем перенос самого заголовка, если он очень длинный */
+}
+
+.sortable-table thead th:hover {
+    background-color: #e9ecef;
+}
+
+.sortable-table thead th.sorted {
+    background-color: #ddeeff;
+    color: var(--primary-color-dark);
+}
+
+/* --- НОВЫЙ СТИЛЬ ДЛЯ ВНУТРЕННЕГО КОНТЕЙНЕРА В TH --- */
+.th-content-wrapper {
+    display: flex;           /* Выстраиваем текст и иконку в ряд */
+    align-items: center;     /* Вертикальное выравнивание по центру */
+    justify-content: space-between; /* Текст слева, иконка справа (если иконка одна) */
+                                 /* Или можно использовать 'flex-start' и gap */
+    gap: 0.4em;              /* Отступ между текстом и иконкой, если их несколько */
+}
+
+/* Если хотим, чтобы текст занимал максимум места, а иконка была прижата вправо */
+.th-content-wrapper > .th-text {
+    flex-grow: 1; /* Текст занимает доступное пространство */
+    overflow: hidden; /* Если нужно обрезать длинный текст */
+    text-overflow: ellipsis; /* Троеточие для длинного текста */
+}
+
+.sort-icon {
+    font-size: 0.8em;
+    flex-shrink: 0; /* Иконка не будет сжиматься */
+    /* margin-left: 0.4em; */ /* Альтернатива gap, если justify-content: flex-start */
+}
+
+.sort-icon.neutral {
+    color: #aaa;
+}
+
+.sort-icon.active {
+    color: var(--primary-color);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .report-table th,
+  .report-table td {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .action-btn {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+  }
+
+  .report-list-container {
+    padding: 1rem;
+  }
+
+  .actions-cell {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
 }

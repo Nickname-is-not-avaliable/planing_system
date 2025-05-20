@@ -9,7 +9,6 @@ export const translateRole = (roleName) => {
     const rolesMap = {
       ADMIN: 'Администратор',
       ANALYST: 'Аналитик',
-      MANAGER: 'Менеджер (Аналитик)', // Уточни название
       USER: 'Пользователь',
       EXECUTOR: 'Исполнитель',
     };

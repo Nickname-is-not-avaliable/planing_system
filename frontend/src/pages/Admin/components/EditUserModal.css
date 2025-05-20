@@ -1,100 +1,144 @@
-/* src/pages/Admin/components/EditUserModal.css */
+/* Модальное окно – затемнённый фон */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 10, 20, 0.4);
+    backdrop-filter: blur(6px);
     display: flex;
-    align-items: center;
     justify-content: center;
-    z-index: 1000; /* Поверх остального контента */
+    align-items: center;
+    z-index: 1000;
 }
 
+/* Основной блок модального окна */
 .modal-content {
-    background-color: white;
-    padding: 25px 30px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 500px; /* Ограничиваем ширину модалки */
-    animation: fadeInModal 0.3s ease-out;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    animation: fadeIn 0.3s ease-out;
+    color: #1a1a1a;
 }
 
-@keyframes fadeInModal {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-
+/* Заголовок */
 .modal-content h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 1.5em;
-    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-.modal-content .form-group {
-    margin-bottom: 18px;
+/* Группа полей */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
 }
 
-.modal-content .form-group label {
-    display: block;
-    margin-bottom: 6px;
+.form-group label {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
     font-weight: 500;
-    color: #444;
+    color: #333;
 }
 
-.modal-content .form-group input[type="text"],
-.modal-content .form-group input[type="email"],
-.modal-content .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 1em;
+.form-group input,
+.form-group select {
+    padding: 0.6rem 0.9rem;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
-.modal-content .form-group input:disabled,
-.modal-content .form-group select:disabled {
-    background-color: #f0f0f0;
-    cursor: not-allowed;
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #4c8eff;
+    box-shadow: 0 0 0 3px rgba(76, 142, 255, 0.2);
 }
 
+/* Кнопки */
 .modal-actions {
     display: flex;
-    justify-content: flex-end; /* Кнопки справа */
-    gap: 10px; /* Отступ между кнопками */
-    margin-top: 25px;
-    padding-top: 15px;
-    border-top: 1px solid #eee;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
 }
 
-/* Стили для кнопок в модалке (могут наследоваться или быть специфичными) */
-.modal-actions .action-btn { /* Используем общий класс, если есть */
-    padding: 8px 18px;
-    font-size: 0.95em;
-}
-/* Или можно определить .modal-save-btn, .modal-cancel-btn */
-
-.modal-error {
-    margin-bottom: 15px;
-    padding: 10px;
+.action-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
-/* Стили из UserManagementPage.css для кнопок, если они не глобальные */
-.save-btn { background-color: #28a745; color: white; }
-.save-btn:hover { background-color: #218838; }
-.cancel-btn { background-color: #6c757d; color: white; }
-.cancel-btn:hover { background-color: #5a6268; }
+/* Кнопка "Сохранить" */
+.save-btn {
+    background: linear-gradient(135deg, #4c8eff, #6f9dff);
+    color: white;
+}
 
-.error-message { /* Базовый стиль ошибки, если не переопределен в UserManagementPage.css */
-    color: #dc3545;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-    text-align: center;
+.save-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #3a7bef, #568dff);
+    box-shadow: 0 4px 12px rgba(76, 142, 255, 0.4);
+}
+
+/* Кнопка "Отмена" */
+.cancel-btn {
+    background: rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+.cancel-btn:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Ошибка */
+.error-message.modal-error {
+    color: #d8000c;
+    background: rgba(255, 0, 0, 0.05);
+    padding: 0.7rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/*Адаптив*/
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 1.2rem;
+        border-radius: 16px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .action-btn {
+        width: 100%;
+    }
 }

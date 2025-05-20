@@ -1,0 +1,244 @@
+/* src/pages/Analytics/AnalyticsPage.css */
+
+/* Общий контейнер страницы .page-container стилизуется в index.css */
+/* Заголовок страницы .analytics-page h2 стилизуется через .page-container > h2 в index.css */
+.analytics-page h2 {
+    margin-bottom: var(--spacing-xl); /* Отступ под заголовком "Аналитика и Статистика" */
+}
+
+/* === Панель фильтров === */
+.analytics-filters {
+    background-color: #fdfdff; /* Очень светлый фон */
+    padding: var(--spacing-xl); /* Большие внутренние отступы */
+    border-radius: var(--border-radius-lg);
+    margin-bottom: calc(var(--spacing-xl) * 1.5); /* Значительный отступ под панелью фильтров */
+    border: 1px solid var(--border-color-light);
+    box-shadow: var(--box-shadow-md); /* Более выраженная тень */
+}
+
+.analytics-filters h4 { /* Заголовок "Фильтры аналитики" */
+    margin-top: 0;
+    margin-bottom: var(--spacing-xl); /* Больше отступ под этим заголовком */
+    font-size: 1.3rem; /* Крупнее */
+    color: var(--secondary-color-dark);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color); /* Четче разделитель */
+}
+
+/* Ряды внутри панели фильтров */
+.analytics-filters .form-row {
+    display: flex;
+    flex-wrap: wrap; /* Разрешаем перенос */
+    /* gap между элементами ряда будет управляться margin-right у .form-group */
+    margin-bottom: var(--spacing-lg); /* Отступ под каждым рядом полей */
+}
+.analytics-filters .form-row:last-of-type {
+    margin-bottom: 0; /* Убираем отступ у последнего ряда перед кнопками */
+}
+
+/* Группа фильтра (label + input/select) */
+.analytics-filters .form-group {
+    /* Позволяет 2-3 элемента в ряд на широких экранах, иначе перенос */
+    flex: 1 1 calc(33.333% - var(--spacing-lg)); /* Расчет для 3х колонок с gap */
+    min-width: 250px; /* Минимальная ширина поля фильтра */
+    margin-right: var(--spacing-lg); /* Отступ справа для создания "gap" */
+    margin-bottom: var(--spacing-lg); /* Отступ снизу, если элементы переносятся */
+}
+/* Убираем правый отступ у последнего элемента в ряду, чтобы не было лишнего пространства */
+.analytics-filters .form-row .form-group:last-child {
+    margin-right: 0;
+}
+/* Если в ряду только один элемент, он займет всю ширину */
+.analytics-filters .form-row .form-group:only-child {
+    flex-basis: 100%;
+}
+
+
+.analytics-filters .form-group label {
+    font-size: 0.95em; /* Чуть крупнее label */
+    margin-bottom: var(--spacing-sm); /* Увеличим отступ у label */
+}
+
+/* Поля ввода и select внутри фильтров */
+.analytics-filters .form-control {
+    /* Стили наследуются из index.css, можно добавить специфику, если нужно */
+}
+
+/* Кнопка сброса фильтров */
+.analytics-filters .filter-actions {
+    margin-top: var(--spacing-xl); /* Больше отступ над кнопкой */
+    text-align: left;
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color-light);
+}
+
+
+/* === Сводные карточки по планам === */
+.stats-cards-grid {
+    display: grid;
+    /* Адаптивные колонки, минимум 220px, максимум 4 колонки */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-xl); /* Большой отступ между карточками */
+    margin-bottom: calc(var(--spacing-xl) * 1.5); /* Значительный отступ под карточками */
+}
+
+.stat-card {
+    background-color: var(--white-color);
+    padding: var(--spacing-xl); /* Больше внутренние отступы */
+    border-radius: var(--border-radius-lg); /* Более скругленные */
+    box-shadow: var(--box-shadow-md); /* Более заметная тень */
+    text-align: center;
+    border-left: 6px solid var(--secondary-color); /* Увеличили толщину полоски */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Равномерное распределение, если высота разная */
+}
+.stat-card svg {
+    font-size: 2.2rem; /* Крупнее иконка */
+    margin-bottom: var(--spacing-md);
+    color: var(--secondary-color);
+}
+.stat-card h4 {
+    margin-bottom: var(--spacing-sm);
+    font-size: 1rem;
+    color: var(--muted-color);
+    font-weight: 500;
+    min-height: 2.8em; /* Для выравнивания, если текст в 2 строки */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.3;
+}
+.stat-card h4 small {
+    font-size: 0.75em;
+    display: block;
+    font-weight: 400;
+    margin-top: 0.2em;
+}
+.stat-card p {
+    font-size: 2.2rem; /* Крупнее цифры */
+    font-weight: 700;
+    margin: var(--spacing-sm) 0 0 0; /* Отступ над цифрой */
+    color: var(--dark-color);
+}
+/* Цвета для разных статусов карточек (остаются) */
+.stat-card.active svg, .stat-card.active { border-left-color: var(--info-color); }
+.stat-card.active svg { color: var(--info-color); }
+.stat-card.completed svg, .stat-card.completed { border-left-color: var(--success-color); }
+.stat-card.completed svg { color: var(--success-color); }
+.stat-card.overdue svg, .stat-card.overdue { border-left-color: var(--danger-color); }
+.stat-card.overdue svg { color: var(--danger-color); }
+
+/* Сообщение "Нет данных" */
+.no-data-message {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+    color: var(--muted-color);
+    font-style: italic;
+    grid-column: 1 / -1;
+    margin-bottom: var(--spacing-xl);
+}
+
+/* === Сетка для графиков === */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); /* Чуть уменьшил minmax */
+    gap: var(--spacing-xl); /* Больше отступ */
+}
+
+.chart-container {
+    background-color: var(--white-color);
+    padding: var(--spacing-xl); /* Больше padding */
+    border-radius: var(--border-radius-lg); /* Больше скругление */
+    box-shadow: var(--box-shadow-md);
+    min-height: 400px; /* Увеличил высоту */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-container.placeholder p {
+    font-size: 1.1em; /* Крупнее текст заглушки */
+}
+
+.chart-container canvas {
+    max-width: 100%;
+    /* max-height убран, чтобы график занимал доступную высоту в min-height контейнера */
+}
+.analytics-page {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-xl) * 2); /* Гарантированный отступ между большими секциями */
+}
+
+/* Радикальные отступы для разделения секций */
+.analytics-filters {
+  margin-bottom: 64px;
+}
+
+.stats-cards-grid {
+  margin-bottom: 64px;
+}
+
+.charts-grid {
+  margin-bottom: 64px;
+}
+
+/* Чёткий отступ между секциями, если всё слипается */
+.analytics-page > * {
+  margin-bottom: 64px;
+}
+/* Иногда помогает, если браузер ломает поток */
+.analytics-page {
+  display: block;
+  width: 100%;
+}
+
+.analytics-page h2 {
+  margin-bottom: 48px;
+}
+
+/* src/pages/Analytics/AnalyticsPage.css или index.css */
+
+/* ... существующие стили ... */
+
+/* Кликабельные карточки статистики */
+.stats-cards-grid .stat-card {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.stats-cards-grid .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--box-shadow-lg); /* Более выраженная тень при наведении */
+}
+.stats-cards-grid .stat-card.selected {
+    border-left-width: 8px; /* Увеличиваем толщину выделенной полоски */
+    /* Можно добавить и другие стили для выделения */
+    box-shadow: 0 0 0 3px var(--secondary-color); /* Рамка выделения */
+    transform: scale(1.02);
+}
+
+/* Контейнер для сброса выделения */
+.highlight-reset-container {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background-color: var(--light-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+.highlight-reset-container p {
+    margin: 0;
+    font-size: 0.95em;
+}
+.highlight-reset-container p strong {
+    color: var(--secondary-color);
+}
+.highlight-reset-container .action-btn svg {
+    margin-right: var(--spacing-xs);
+}

@@ -1,13 +1,201 @@
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+  /* Цветовая палитра */
+  --primary-color: #0d6efd; /* Bootstrap Primary Blue */
+  --primary-color-dark: #0b5ed7;
+  --primary-color-light: #cfe2ff;
+  --secondary-color: #6c757d; /* Серый */
+  --success-color: #198754;  /* Зеленый */
+  --danger-color: #dc3545;   /* Красный */
+  --warning-color: #ffc107;  /* Желтый */
+  --info-color: #0dcaf0;     /* Бирюзовый */
+  --light-color: #f8f9fa;    /* Очень светлый серый/белый */
+  --dark-color: #212529;     /* Темный для текста */
+  --white-color: #fff;
+  --body-bg: #f4f6f8;        /* Общий фон для body */
+  --page-bg: var(--white-color); /* Фон для основных контейнеров страниц */
+  --text-color: #343a40;
+  --text-muted: #6c757d;
+  --border-color: #dee2e6;
+  --border-color-light: #e9ecef;
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.8rem;
+
+  /* Фоны */
+  --page-bg-gradient: linear-gradient(135deg, #eef2f3 0%, #f0f4f8 100%); /* Общий для контента */
+  --page-bg-home-gradient: linear-gradient(135deg, #e0f7ff, #f3e8ff); /* Для HomePage */
+
+  /* Тени */
+  --box-shadow-sm: 0 .125rem .25rem rgba(0,0,0,.075);
+  --box-shadow-md: 0 .5rem 1rem rgba(0,0,0,.1);
+  --box-shadow-lg: 0 1rem 3rem rgba(0,0,0,.125);
+
+  /* Шрифты */
+  --font-family-sans-serif: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-size-base: 1rem; /* 16px */
+  --line-height-base: 1.6;
+
+  --base-spacing-unit: 8px;
+
+  --spacing-xxs: calc(var(--base-spacing-unit) * 0.25); /* 2px, если база 8px */
+  --spacing-xs:  calc(var(--base-spacing-unit) * 0.5);  /* 4px */
+  --spacing-sm:  calc(var(--base-spacing-unit) * 1);    /* 8px */
+  --spacing-md:  calc(var(--base-spacing-unit) * 1.5);  /* 12px */
+  --spacing-lg:  calc(var(--base-spacing-unit) * 2);    /* 16px */
+  --spacing-xl:  calc(var(--base-spacing-unit) * 3);    /* 24px */
+  --spacing-xxl: calc(var(--base-spacing-unit) * 4);    /* 32px */
+  --spacing-xxxl:calc(var(--base-spacing-unit) * 6);    /* 48px */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-family-sans-serif);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--text-color);
+  background-color: var(--body-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--dark-color);
 }
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+p { margin-top: 0; margin-bottom: 1rem; }
+
+a { color: var(--primary-color); text-decoration: none; transition: color 0.2s ease-in-out; }
+a:hover { color: var(--primary-color-dark); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  border-collapse: collapse;
+}
+table th, table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid var(--border-color);
+}
+table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid var(--border-color);
+  background-color: var(--light-color);
+  font-weight: 500;
+  text-align: left;
+}
+table tbody tr:nth-child(odd) {
+  /* background-color: rgba(0,0,0,.025); */ /* Легкая зебра */
+}
+table tbody tr:hover {
+  background-color: rgba(0,0,0,.05);
+}
+
+/* Общие классы контейнеров */
+.page-container { /* Для страниц списков, деталей, форм создания */
+  max-width: 1140px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--page-bg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-md);
+}
+.page-container .page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.page-container .page-header h2 { /* Заголовок страницы */
+   font-size: 2rem;
+   font-weight: 600;
+   color: var(--dark-color);
+}
+
+/* Формы */
+.form-group { margin-bottom: 1.25rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #495057; }
+.form-control,
+textarea.form-control,
+select.form-control {
+    display: block; width: 100%;
+    padding: 0.6rem 0.9rem; font-size: 1rem; font-weight: 400;
+    line-height: 1.5; color: var(--dark-color); background-color: var(--white-color);
+    background-clip: padding-box; border: 1px solid var(--border-color);
+    appearance: none; border-radius: var(--border-radius-md);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.form-control:focus {
+    color: var(--dark-color); background-color: var(--white-color); border-color: #86b7fe;
+    outline: 0; box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25);
+}
+.form-control:disabled, .form-control[readonly] { background-color: #e9ecef; opacity: 1; }
+textarea.form-control { min-height: calc(1.5em + 1.2rem + 2px); resize: vertical; } /* Для многострочного текста */
+.form-row { display: flex; gap: 1.5rem; margin-bottom: 1.25rem; }
+.form-row .form-group { flex: 1; margin-bottom: 0; } /* Растягиваем группы в ряду */
+.form-actions {
+  margin-top: 2rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color-light);
+  display: flex; justify-content: flex-end; gap: 0.75rem;
+}
+
+/* Кнопки */
+.action-btn {
+  padding: 0.6rem 1.2rem; border: 1px solid transparent;
+  border-radius: var(--border-radius-md); cursor: pointer;
+  font-size: 0.95rem; font-weight: 500;
+  transition: all 0.2s ease;
+  text-align: center; display: inline-flex;
+  align-items: center; justify-content: center; gap: 0.5rem;
+}
+.action-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+.primary-btn, .save-btn { background-color: var(--primary-color); color: var(--white-color); border-color: var(--primary-color); }
+.primary-btn:hover, .save-btn:hover { background-color: var(--primary-color-dark); border-color: var(--primary-color-dark); }
+
+.secondary-btn, .cancel-btn { background-color: var(--secondary-color); color: var(--white-color); border-color: var(--secondary-color); }
+.secondary-btn:hover, .cancel-btn:hover { background-color: #5a6268; border-color: #545b62; }
+
+.danger-btn, .delete-btn { background-color: var(--danger-color); color: var(--white-color); border-color: var(--danger-color); }
+.danger-btn:hover, .delete-btn:hover { background-color: #bb2d3b; border-color: #b02a37; }
+
+.edit-btn { background-color: var(--warning-color); color: var(--dark-color); border-color: var(--warning-color); }
+.edit-btn:hover { background-color: #ffba00; border-color: #ffb300; }
+
+.create-btn { background-color: var(--success-color); color: var(--white-color); border-color: var(--success-color); }
+.create-btn:hover { background-color: #157347; border-color: #146c43; }
+
+/* Стили для ошибок */
+.error-message {
+    background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
+    padding: 0.75rem 1.25rem; margin-bottom: 1rem;
+    border-radius: var(--border-radius-md); text-align: left; /* Сделаем слева */
+}
+.main-error { margin-bottom: 1.5rem; text-align: center; }
+.modal-error { margin-bottom: 15px; }
+.upload-error { margin-top: 10px; font-size: 0.9em; width: 100%;}
+
+/* Индикаторы загрузки */
+.loading-container, .loading-indicator /* Добавляем класс для общего использования */ {
+  display: flex; justify-content: center; align-items: center;
+  padding: 2rem; font-size: 1.1rem; color: var(--text-muted);
+}
+
+
+
+

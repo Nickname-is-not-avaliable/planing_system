@@ -1,95 +1,139 @@
-/* src/pages/Admin/UserManagementPage.css */
+/* Контейнер всей страницы */
 .user-management-container {
-    max-width: 1000px;
-    margin: 30px auto;
-    padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
+/* Заголовок */
 .user-management-container h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #333;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
 }
 
+/* Основная ошибка */
+.error-message.main-error {
+  color: #e74c3c;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Таблица */
 .users-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
 }
 
-.users-table th,
-.users-table td {
-    border: 1px solid #ddd;
-    padding: 10px 12px;
-    text-align: left;
-    vertical-align: middle;
-}
-
+/* Заголовки таблицы */
 .users-table thead th {
-    background-color: #f0f2f5; /* Светло-серый фон для заголовков */
-    font-weight: 600;
-    color: #555;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #34495e;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #dcdde1;
+  border-radius: 0.5rem 0.5rem 0 0;
 }
 
-.users-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+/* Строки таблицы */
+.users-table tbody tr {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
 }
 
+/* Hover эффект строки */
 .users-table tbody tr:hover {
-    background-color: #f1f1f1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.users-table select {
-    padding: 6px 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    min-width: 150px; /* Чтобы селект не был слишком узким */
+/* Ячейки таблицы */
+.users-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #2c3e50;
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
 }
 
+/* Кнопки действий */
 .action-btn {
-    padding: 6px 12px;
-    margin-right: 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.2s, opacity 0.2s;
-}
-.action-btn:last-child {
-    margin-right: 0;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
 }
 
-.edit-btn { background-color: #ffc107; color: #333;}
-.edit-btn:hover { background-color: #e0a800; }
-
-.delete-btn { background-color: #dc3545; color: white; }
-.delete-btn:hover { background-color: #c82333; }
-
-.save-btn { background-color: #28a745; color: white; }
-.save-btn:hover { background-color: #218838; }
-
-.cancel-btn { background-color: #6c757d; color: white; }
-.cancel-btn:hover { background-color: #5a6268; }
-
-.action-btn:disabled {
-    background-color: #ccc;
-    color: #666;
-    cursor: not-allowed;
-    opacity: 0.7;
+/* Кнопка редактирования */
+.edit-btn {
+  background-color: rgba(52, 152, 219, 0.1);
+  color: #2980b9;
+  border: 1px solid rgba(41, 128, 185, 0.3);
+}
+.edit-btn:hover {
+  background-color: rgba(52, 152, 219, 0.15);
+  border-color: rgba(41, 128, 185, 0.6);
 }
 
-/* Общая ошибка над таблицей */
-.main-error {
-    margin-bottom: 15px;
+/* Кнопка удаления */
+.delete-btn {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #c0392b;
+  border: 1px solid rgba(192, 57, 43, 0.3);
+}
+.delete-btn:hover {
+  background-color: rgba(231, 76, 60, 0.2);
+  border-color: rgba(192, 57, 43, 0.6);
 }
 
-/* Ошибка внутри строки (если будем добавлять) */
-.error-message {
-    color: #dc3545;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 8px 12px;
-    border-radius: 4px;
-    text-align: center;
+/* Отключенная кнопка */
+.delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-style: dashed;
 }
+
+/* Адаптивность таблицы на узких экранах */
+@media (max-width: 768px) {
+  .users-table thead {
+    display: none;
+  }
+
+  .users-table, .users-table tbody, .users-table tr, .users-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .users-table tr {
+    margin-bottom: 1rem;
+  }
+
+  .users-table td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    position: relative;
+  }
+
+  .users-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #7f8c8d;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+}
+

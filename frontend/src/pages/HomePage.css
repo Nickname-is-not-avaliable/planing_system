@@ -1,91 +1,114 @@
+/* src/pages/HomePage.css */
+
 /* Общий контейнер */
 .home-page-container {
-    min-height: 100vh;
+    min-height: 100vh; /* Растягиваем контейнер на всю высоту видимой области */
     padding: 2rem;
-    background: linear-gradient(135deg, #e0f7ff, #f3e8ff);
-    font-family: 'Segoe UI', sans-serif;
-    color: #333;
+    background: linear-gradient(135deg, #1886a41c, #320b9e18); /* Нежный градиентный фон */
+    font-family: 'Segoe UI', sans-serif; /* Шрифт по умолчанию для страницы */
+    color: #333; /* Основной цвет текста */
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2rem; /* Отступы между основными блоками */
   }
   
   /* Приветствие */
+  .welcome-header {
+    /* Стили для этого блока могут быть минимальными, т.к. он простой */
+  }
   .welcome-header h1 {
-    font-size: 2.2rem;
+    font-size: 2.2rem; /* Размер заголовка */
+    font-weight: 600; /* Жирность заголовка */
     margin-bottom: 0.3rem;
+    color: #2c3e50; /* Более темный, насыщенный цвет для заголовка */
   }
   
   .welcome-header p {
     font-size: 1.1rem;
-    color: #666;
+    color: #555; /* Цвет текста под заголовком */
   }
   
-  /* Описание */
+  /* Описание системы */
   .system-overview {
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.6); /* Полупрозрачный белый фон */
+    border-radius: 1.5rem; /* Скругление углов */
     padding: 1rem 1.5rem;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px); /* Эффект размытия фона под элементом */
+    -webkit-backdrop-filter: blur(10px); /* Для поддержки Safari */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Мягкая тень */
     font-size: 1rem;
+    line-height: 1.6; /* Улучшаем читаемость */
   }
   
   /* Сетка карточек */
   .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    margin-top: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Адаптивные колонки */
+    gap: 2rem; /* Отступы между карточками */
+    margin-top: 1rem; /* Небольшой отступ сверху от предыдущего блока */
   }
   
   /* Карточка */
   .dashboard-card {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.5); /* Более прозрачный фон для карточек */
     border-radius: 1.5rem;
     padding: 1.5rem;
-    backdrop-filter: blur(14px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(14px); /* Более сильное размытие для карточек */
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06); /* Легкая тень */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-decoration: none;
-    color: #222;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+    text-decoration: none; /* Убираем подчеркивание у ссылок-карточек */
+    color: #222; /* Цвет текста внутри карточки */
+    display: flex; /* Для внутреннего выравнивания */
+    flex-direction: column; /* Элементы внутри вертикально */
+    gap: 0.6rem; /* Отступ между элементами в карточке */
+    border: 1px solid rgba(255, 255, 255, 0.18); /* Тонкая светлая рамка для эффекта стекла */
   }
   
-  .dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-  }
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.8); /* Светлее при наведении */
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4), 
+              0 4px 20px rgba(0, 0, 0, 0.05); /* Светлая рамка + мягкая подсветка */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Чётче граница, как у hover в хедере */
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
   
-  /* Иконка */
+  /* Иконка в карточке */
   .card-icon {
-    color: #4a90e2;
-    background: #e6f0fa;
-    width: fit-content;
-    padding: 0.7rem;
-    border-radius: 50%;
+    color: #4a90e2; /* Цвет иконки */
+    background: #e6f0fa; /* Фон для круга под иконкой */
+    width: fit-content; /* Ширина по содержимому */
+    padding: 0.7rem; /* Внутренние отступы */
+    border-radius: 50%; /* Делаем круглым */
     transition: transform 0.3s ease;
+    /* Для центрирования самой иконки, если она не SVG */
+    display: inline-flex; 
+    align-items: center;
+    justify-content: center;
   }
   
   .dashboard-card:hover .card-icon {
-    transform: scale(1.1);
+    transform: scale(1.1); /* Увеличение иконки при наведении на карточку */
   }
   
   /* Заголовок карточки */
   .dashboard-card h3 {
     font-size: 1.25rem;
+    font-weight: 500; /* Средняя жирность */
     margin: 0;
   }
   
-  /* Пояснение */
+  /* Текст-пояснение в карточке */
   .dashboard-card p {
     font-size: 0.95rem;
     color: #555;
+    line-height: 1.5;
   }
   
-  /* Нижняя часть */
+  /* Нижняя часть страницы */
   .next-steps {
     font-size: 0.95rem;
     text-align: center;
@@ -93,22 +116,32 @@
     color: #777;
   }
   
-  /* Кнопка для модалки */
+  /* Кнопка для модалки (пока просто стили, без функционала модалки) */
   .info-button {
-    position: fixed;
+    position: fixed; /* Фиксированное позиционирование */
     bottom: 2rem;
     right: 2rem;
-    background: #ffffffaa;
+    background: rgba(255, 255, 255, 0.7); /* Полупрозрачный фон */
     border: none;
     backdrop-filter: blur(8px);
-    border-radius: 50%;
-    padding: 0.9rem;
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 50%; /* Круглая кнопка */
+    padding: 0.9rem; /* Внутренние отступы */
     cursor: pointer;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    display: flex; /* Для центрирования иконки внутри */
+    align-items: center;
+    justify-content: center;
+    z-index: 100; /* Поверх другого контента */
   }
   
   .info-button:hover {
     transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.9);
   }
   
+  .info-button svg { /* Стили для иконки внутри кнопки, если будешь использовать react-icons */
+    font-size: 1.5rem; /* Размер иконки */
+    color: #333;
+  }
